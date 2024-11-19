@@ -1,0 +1,33 @@
+# set terminal png size 800,500 enhanced font "Helvetica,20"
+set terminal png size 800,600
+set output output_filename
+
+red = "#FF0000"; blue = "#0000FF";
+set style data histogram
+set style histogram cluster gap 1
+set style fill solid
+set boxwidth 0.9
+
+set xtics format ""
+scale = (10**pow)*y_mult
+tick_scale = (10**(pow-1))*y_mult
+set yrange [0:scale]
+set ylabel y_label
+set ylabel offset 1
+set ytics .5*tick_scale
+set grid ytics
+
+set border 3
+set tics nomirror
+
+set key box
+set key width 1 height 1
+# set title sprintf("%s\n{/*0.7 %s}", graph_title, subtitle)
+set title graph_title
+
+x_off = .19
+y_off = scale/50.0
+plot filename using ($2/conversion_scale):xtic(1) title "GZIP" linecolor rgb red, \
+    ""  using ($0 - x_off):(($2/conversion_scale) + y_off):(sprintf("%3.2f",$2/conversion_scale)) with labels notitle, \
+    filename using ($3/conversion_scale) title "XZ" linecolor rgb blue, \
+    ""  using ($0 + x_off):(($3/conversion_scale) + y_off):(sprintf("%3.2f",$3/conversion_scale)) with labels notitle
