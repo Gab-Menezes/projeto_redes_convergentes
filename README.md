@@ -1,6 +1,3 @@
-# The Project
-TODO
-
 # Folder structure
 ```
 ./
